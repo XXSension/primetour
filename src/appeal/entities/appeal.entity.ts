@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'appeal',
+  name: 'appealPrimetour',
 })
 export class Appeal {
   @PrimaryGeneratedColumn()

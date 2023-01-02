@@ -12,7 +12,7 @@ export class StartProjectService {
     this.logger = new Logger();
   }
 
-  @Cron('0 */30 * * * *')
+  @Cron('0 */15 * * * *')
   async onModuleInit(): Promise<void> {
     console.log(Math.round(Number(new Date()) / 1000) + 86400);
     await this.requestUonService.checkDataAppeal();
