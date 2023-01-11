@@ -1,17 +1,12 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { AxiosInstance } from 'axios';
-import { AuthService } from 'src/auth/auth.service';
 import { logger } from 'src/logger/logger';
 
 @Injectable()
 export class RequestAmoService {
   api: AxiosInstance;
-  constructor(
-    @Inject(forwardRef(() => AccountsService))
-    private accountService: AccountsService,
-    private authService: AuthService,
-  ) {
+  constructor(private accountService: AccountsService) {
     this.api = accountService.createConnector(29865034);
   }
 
@@ -74,7 +69,7 @@ export class RequestAmoService {
     const data = await this.api
       .post('/api/v4/leads/complex', {
         params: {
-          name: 'Обращение с UON',
+          name: 'Заявка с виасана',
           status_id: 44581372, //заменить
           pipeline_id: 4930141, //заменить
           price: appeal.budget ? appeal.budget : 0,
@@ -114,7 +109,7 @@ export class RequestAmoService {
     const data = await this.api
       .post('/api/v4/leads', {
         params: {
-          name: 'Обращение с UON',
+          name: 'Заявка с виасана',
           status_id: 44581372,
           pipeline_id: 4930141,
           price: appeal.budget ? appeal.budget : 0,

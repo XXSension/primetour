@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountsModule } from './accounts/accounts.module';
-import { AuthModule } from './auth/auth.module';
 import { config } from './config';
 import { StartProjectModule } from './startProject/startProject.module';
 import { RequestAmoModule } from './request-amo/request-amo.module';
@@ -18,16 +17,15 @@ import { AppealModule } from './appeal/appeal.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.TYPEORM_HOST,
-      port: +process.env.TYPEORM_PORT,
-      username: process.env.TYPEORM_USERNAME,
-      database: process.env.TYPEORM_DATABASE,
-      password: process.env.TYPEORM_PASSWORD,
+      host: 'db.onix-tech.ru',
+      port: 3306,
+      username: 'timur',
+      database: 'report_to_telegram_timur',
+      password: 'q@FqYM(krB!36V1n',
       entities: ['dist/**/*.entity.js'],
-      synchronize: true,
+      synchronize: false,
     }),
     AccountsModule,
-    AuthModule,
     StartProjectModule,
     RequestAmoModule,
     ScheduleModule.forRoot(),

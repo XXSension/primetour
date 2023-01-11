@@ -1,4 +1,4 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { AppealService } from 'src/appeal/appeal.service';
 import { logger } from 'src/logger/logger';
@@ -7,9 +7,7 @@ import { RequestAmoService } from 'src/request-amo/request-amo.service';
 @Injectable()
 export class RequestUonService {
   constructor(
-    @Inject(forwardRef(() => AppealService))
     private appealService: AppealService,
-    @Inject(forwardRef(() => RequestAmoService))
     private requestAmoService: RequestAmoService,
   ) {}
   async getDataUon() {

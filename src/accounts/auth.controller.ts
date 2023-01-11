@@ -1,6 +1,6 @@
 import { Controller, All, Query, Res } from '@nestjs/common';
 import { AuthField } from 'src/interfaces/auth-field.interfaces';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Response } from 'express';
 
 @Controller('auth')
