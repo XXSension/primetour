@@ -25,6 +25,15 @@ export class RequestUonService {
     return [];
   }
 
+  transformationDataToAndFrom(apiDate) {
+    if (apiDate == null || apiDate == '') {
+      return '';
+    } else {
+      const listApi = apiDate.split(' ')[0].split('-');
+      return `${listApi[2]}.${listApi[1]}.${listApi[0]}`;
+    }
+  }
+
   transformationData(): string {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -45,17 +54,24 @@ export class RequestUonService {
           appeal.client_requirements_budget != null
             ? appeal.client_requirements_budget
             : 0,
-        desired_date_from:
-          appeal.client_requirements_date_from != null
-            ? appeal.client_requirements_date_from
+        count_adult:
+          appeal.client_requirements_tourists_adult_count != null
+            ? appeal.client_requirements_tourists_adult_count
             : '',
-        desired_date_before:
-          appeal.client_requirements_date_to != null
-            ? appeal.client_requirements_days_to
+        count_child:
+          appeal.client_requirements_tourists_child_count != null
+            ? appeal.client_requirements_tourists_child_count
             : '',
+        count_days: this.transformationCountDays(appeal),
+        desired_date_from: this.transformationDataToAndFrom(
+          appeal.client_requirements_date_from,
+        ),
+        desired_date_before: this.transformationDataToAndFrom(
+          appeal.client_requirements_date_to,
+        ),
         desired_number_of_nights:
           appeal.client_requirements_days_to != null
-            ? appeal.client_requirements_date_to
+            ? appeal.client_requirements_days_to
             : '',
         notes:
           appeal.client_requirements_note != null
@@ -63,6 +79,26 @@ export class RequestUonService {
             : '',
       };
     });
+  }
+
+  transformationCountDays(appeal) {
+    if (
+      appeal.client_requirements_days_from &&
+      !appeal.client_requirements_days_to
+    ) {
+      return appeal.client_requirements_days_from;
+    } else if (
+      appeal.client_requirements_days_to &&
+      !appeal.client_requirements_days_from
+    ) {
+      return appeal.client_requirements_days_to;
+    } else if (
+      appeal.client_requirements_days_to &&
+      appeal.client_requirements_days_from
+    ) {
+      return `${appeal.client_requirements_days_from}-${appeal.client_requirements_days_to}`;
+    }
+    return 'Данных по Кол-во ночей нет';
   }
 
   async checkDataAppeal(): Promise<void> {
@@ -77,8 +113,10 @@ export class RequestUonService {
   async checkAndSaveAppealInBD(appeal): Promise<void> {
     if (appeal.name && (appeal.telephone || appeal.email)) {
       if ((await this.appealService.findById(appeal.id_system)) == null) {
-        const newData = this.appealService.create(appeal);
-        this.requestAmoService.addAmoLeads(appeal);
+        console.log(appeal);
+        const newData = await this.appealService.create(appeal);
+        console.log(newData);
+        await this.requestAmoService.addAmoLeads(appeal);
       }
     }
   }

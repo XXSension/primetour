@@ -73,6 +73,32 @@ export class RequestAmoService {
           status_id: 44581372, //заменить
           pipeline_id: 4930141, //заменить
           price: appeal.budget ? appeal.budget : 0,
+          'custom_fields_values': [
+            {
+              'field_id':1033797,
+              'values': [
+                {
+                  'value': appeal.count_days
+                },
+              ],
+            },
+            {
+              'field_id':1026739,
+              'values': [
+                {
+                  'value': `${appeal.count_child}`
+                },
+              ],
+            },
+            {
+              'field_id':1026737,
+              'values': [
+                {
+                  'value': `${appeal.count_adult}`
+                },
+              ],
+            },
+          ],
           _embedded: {
             contacts: [
               {
@@ -104,6 +130,7 @@ export class RequestAmoService {
       .catch((err) => logger.error(err));
     return data;
   }
+
   //Добавление сделки существующего контакта
   async apiLead(appeal, contactId) {
     const data = await this.api
@@ -113,6 +140,32 @@ export class RequestAmoService {
           status_id: 44581372,
           pipeline_id: 4930141,
           price: appeal.budget ? appeal.budget : 0,
+          'custom_fields_values': [
+            {
+              'field_id':1033797,
+              'values': [
+                {
+                  'value': appeal.count_days
+                },
+              ],
+            },
+            {
+              'field_id':1026739,
+              'values': [
+                {
+                  'value': `${appeal.count_child}`
+                },
+              ],
+            },
+            {
+              'field_id':1026737,
+              'values': [
+                {
+                  'value': `${appeal.count_adult}`
+                },
+              ],
+            },
+          ],
           _embedded: {
             contacts: {
               first_name: appeal.name,
@@ -144,10 +197,6 @@ export class RequestAmoService {
             }, Желаемая дата окончания тура ${
               appeal.desired_date_before
                 ? appeal.desired_date_before
-                : 'Нет данных'
-            } Желаемое количество ночей ${
-              appeal.desired_number_of_nights
-                ? appeal.desired_number_of_nights
                 : 'Нет данных'
             }`,
           },
